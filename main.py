@@ -71,6 +71,6 @@ async def on_message(message):
             '$botify play https://www.youtube.com/watch?v=fQyg-dk_D94'
         )
         return
-loop = asyncio.get_event_loop()
-loop.run_until_complete(get_pics())
+
+asyncio.run(get_pics())
 client.run(os.getenv('TOKEN'))
