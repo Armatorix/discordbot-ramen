@@ -34,12 +34,12 @@ async def get_pics():
                         data = await resp.read()
                         name = "ramen"+str(len(ramen_pics))+"."+ext
                         ramen_pics[name] = data
-                except:
-                    print("failed to download image XD")
+                except Exception as e:
+                    print("failed to download image XD", e)
                 if len(ramen_pics) >= 20:
                     break
-        except:
-            print("failed search images")
+        except Exception as e:
+            print("failed search images", e)
 
 client = discord.Client()
 
