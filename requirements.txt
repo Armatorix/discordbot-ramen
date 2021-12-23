@@ -1,3 +1,4 @@
 aiohttp==3.7.4.post0
 discord.py==1.7.3
 google_search_results==2.4.0
+asyncio==3.4.3
