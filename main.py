@@ -11,17 +11,16 @@ ramen_pics = {}
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
 
-search = GoogleSearch({
-    "q": "ramen",
-    "api_key": os.getenv('SERAPI_SECRET'),
-    "tbm": "isch",
-    "jin": randrange(2137)
-})
-
 
 async def get_pics():
     async with aiohttp.ClientSession() as session:
         try:
+            search = GoogleSearch({
+                "q": "ramen",
+                "api_key": os.getenv('SERAPI_SECRET'),
+                "tbm": "isch",
+                "jin": randrange(2137)
+            })
             for image_result in search.get_dict()['images_results']:
                 url = image_result["original"]
                 ext = url.split(".")[-1].split("?")[0]
