@@ -7,6 +7,12 @@ from serpapi import GoogleSearch
 import asyncio
 
 base_image_filename = "sad-ramen.jpg"
+rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
+                   "https://www.youtube.com/watch?v=pAC40NDo2yQ",
+                   "https://www.youtube.com/watch?v=r4CCReGjWMI",
+                   "https://www.youtube.com/watch?v=qP1IfZj3mi8",
+                   "https://www.youtube.com/watch?v=tmPr1dSP_hY",
+                   "https://www.youtube.com/watch?v=xBs1yi6I5bY"]
 ramen_pics = {}
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
@@ -53,18 +59,27 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if any(s in message.content.lower() for s in ['ramen', '@r4m3n']):
+    msg_lower = message.content.lower()
+    if any(s in msg_lower for s in ['ramen', '@r4m3n']):
         c = choice(list(ramen_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
         return
 
-    if any(s in message.content.lower() for s in ['bieda', 'biede', 'bogactwo']):
+    if any(s in msg_lower for s in ['bieda', 'biede', 'bogactwo']):
         await message.channel.send(
             "JEBAĆ BIEDE! WSZYSCY ZA JEDNEGO! BIEDA BIEDA BIEDA!")
         await message.channel.send(
             '$botify play https://www.youtube.com/watch?v=fQyg-dk_D94'
         )
         return
+    if any(s in msg_lower for s in ['harnold', 'harnaś', 'harnas', 'radler']):
+        await message.channel.send(
+            "leje harnolda z puchy :axe:\n" +
+            "https://www.youtube.com/watch?v=3dHpEfmegOA\n")
 
+    if any(s in msg_lower for s in ['rychu', 'ryszy']):
+        await message.channel.send(
+            "wszystko na mój koszt panowie!\n" +
+            choice(rychu_creations))
 asyncio.run(get_pics())
 client.run(os.getenv('TOKEN'))
