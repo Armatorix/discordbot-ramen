@@ -54,11 +54,6 @@ async def on_message(message):
         return
 
     if any(s in message.content.lower() for s in ['ramen', '@r4m3n']):
-        # async with aiohttp.ClientSession() as session:
-        #      async with session.get("https://www.kwestiasmaku.com/sites/v123.kwestiasmaku.com/files/tantanmen-ramen-00.jpg") as resp:
-        #         if resp.status != 200:
-        #             return
-        #         data = io.BytesIO(await resp.read())
         c = choice(list(ramen_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
         return
