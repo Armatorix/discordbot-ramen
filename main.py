@@ -5,6 +5,7 @@ import io
 from random import randrange, choice
 from serpapi import GoogleSearch
 import asyncio
+import re
 
 base_image_filename = "sad-ramen.jpg"
 rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
@@ -16,6 +17,10 @@ rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
 ramen_pics = {}
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
+
+
+def single_letters(s):
+    return re.sub(r'(\d)\1+', r'\1', s)
 
 
 async def get_pics():
@@ -59,7 +64,7 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    msg_lower = message.content.lower()
+    msg_lower = single_letters(message.content.lower())
     if any(s in msg_lower for s in ['ramen', '@r4m3n']):
         c = choice(list(ramen_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
