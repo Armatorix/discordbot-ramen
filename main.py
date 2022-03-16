@@ -1,3 +1,4 @@
+from distutils.log import error
 import discord
 import os
 import aiohttp
@@ -5,10 +6,11 @@ import io
 from random import randrange, choice
 from serpapi import GoogleSearch
 import asyncio
-import re
+import requests
 
 base_image_filename = "sad-ramen.jpg"
 base_shreck_filename = "shreck.jpg"
+base_500_filename = "500.jpg"
 rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
                    "https://www.youtube.com/watch?v=pAC40NDo2yQ",
                    "https://www.youtube.com/watch?v=r4CCReGjWMI",
@@ -17,11 +19,16 @@ rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
                    "https://www.youtube.com/watch?v=xBs1yi6I5bY"]
 ramen_pics = {}
 shreck_pics = {}
+error_500_pic = bytes("")
+
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
 
 with open(base_shreck_filename, "rb") as f:
     shreck_pics[base_shreck_filename] = f.read()
+
+with open(base_500_filename, "rb") as f:
+    error_500_pic = f.read()
 
 
 def single_letters(s):
@@ -91,6 +98,21 @@ async def get_pics_shreck():
 client = discord.Client()
 
 
+def gimme_meme():
+    resp = requests.get("https://meme-api.herokuapp.com/gimme")
+    if resp.status_code != 200:
+        return error_500_pic
+
+    json = resp.json()
+    if "url" not in json:
+        return error_500_pic
+
+    resp = requests.get(json["url"])
+    if resp.status_code != 200:
+        return error_500_pic
+    return bytes(resp.raw)
+
+
 @client.event
 async def on_ready():
     print('We have logged in as {0.user}'.format(client))
@@ -102,6 +124,9 @@ async def on_message(message):
         return
 
     msg_lower = single_letters(message.content.lower())
+
+    if any(s in msg_lower for s in ['#meme', "#gimme"]):
+        await message.channel.send(file=discord.File(io.BytesIO(gimme_meme()), filename="meme2137.jpg"))
     if any(s in msg_lower for s in ['ramen', '@r4m3n']):
         c = choice(list(ramen_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
