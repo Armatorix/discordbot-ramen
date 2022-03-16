@@ -25,7 +25,11 @@ with open(base_shreck_filename, "rb") as f:
 
 
 def single_letters(s):
-    return re.sub(r'(\d)\1+', r'\1', s)
+    out = ""
+    for l in s:
+        if out == "" or l != out[-1]:
+            out += l
+    return out
 
 
 async def get_pics():
@@ -124,6 +128,7 @@ async def on_message(message):
         await message.channel.send(
             "wszystko na mój koszt panowie!\n" +
             choice(rychu_creations))
-asyncio.run(get_pics())
-asyncio.run(get_pics_shreck())
-client.run(os.getenv('TOKEN'))
+if __name__ == "__main__":
+    asyncio.run(get_pics())
+    asyncio.run(get_pics_shreck())
+    client.run(os.getenv('TOKEN'))
