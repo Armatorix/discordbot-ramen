@@ -19,7 +19,7 @@ rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
                    "https://www.youtube.com/watch?v=xBs1yi6I5bY"]
 ramen_pics = {}
 shreck_pics = {}
-error_500_pic = bytes("")
+error_500_pic = bytes()
 
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
