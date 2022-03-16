@@ -8,6 +8,7 @@ import asyncio
 import re
 
 base_image_filename = "sad-ramen.jpg"
+base_shreck_filename = "shreck.jpg"
 rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
                    "https://www.youtube.com/watch?v=pAC40NDo2yQ",
                    "https://www.youtube.com/watch?v=r4CCReGjWMI",
@@ -18,6 +19,9 @@ ramen_pics = {}
 shreck_pics = {}
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
+
+with open(base_shreck_filename, "rb") as f:
+    shreck_pics[base_shreck_filename] = f.read()
 
 
 def single_letters(s):
