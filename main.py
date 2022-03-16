@@ -110,7 +110,7 @@ def gimme_meme():
     resp = requests.get(json["url"])
     if resp.status_code != 200:
         return error_500_pic
-    return bytes(resp.raw)
+    return resp.content
 
 
 @client.event
