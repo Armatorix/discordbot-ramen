@@ -105,7 +105,7 @@ async def on_message(message):
 
     if any(s in msg_lower for s in ['shreck', 'shrek', 'love']):
         c = choice(list(shreck_pics))
-        await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
+        await message.channel.send(file=discord.File(io.BytesIO(shreck_pics[c]), filename=c))
         return
 
     if any(s in msg_lower for s in ['bieda', 'biede', 'bogactwo']):
