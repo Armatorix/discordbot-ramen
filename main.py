@@ -15,6 +15,7 @@ rychu_creations = ["https://www.youtube.com/watch?v=M1yBJDNAwsw",
                    "https://www.youtube.com/watch?v=tmPr1dSP_hY",
                    "https://www.youtube.com/watch?v=xBs1yi6I5bY"]
 ramen_pics = {}
+shreck_pics = {}
 with open(base_image_filename, "rb") as f:
     ramen_pics[base_image_filename] = f.read()
 
@@ -51,6 +52,34 @@ async def get_pics():
         except Exception as e:
             print("failed search images", e)
 
+
+async def get_pics_shreck():
+    async with aiohttp.ClientSession() as session:
+        try:
+            search = GoogleSearch({
+                "q": "shrek",
+                "api_key": os.getenv('SERAPI_SECRET'),
+                "tbm": "isch",
+                "jin": randrange(2137)
+            })
+            for image_result in search.get_dict()['images_results']:
+                url = image_result["original"]
+                ext = url.split(".")[-1].split("?")[0]
+                if len(ext) > 4:
+                    continue
+                try:
+                    async with session.get(url) as resp:
+                        if resp.status != 200:
+                            continue
+                        data = await resp.read()
+                        name = "ramen"+str(len(ramen_pics))+"."+ext
+                        shreck_pics[name] = data
+                except Exception as e:
+                    print("failed to download image XD", e)
+                if len(ramen_pics) >= 20:
+                    break
+        except Exception as e:
+            print("failed search images", e)
 client = discord.Client()
 
 
@@ -67,6 +96,11 @@ async def on_message(message):
     msg_lower = single_letters(message.content.lower())
     if any(s in msg_lower for s in ['ramen', '@r4m3n']):
         c = choice(list(ramen_pics))
+        await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
+        return
+
+    if any(s in msg_lower for s in ['shreck', 'shrek', 'love']):
+        c = choice(list(shreck_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
         return
 
@@ -87,4 +121,5 @@ async def on_message(message):
             "wszystko na mój koszt panowie!\n" +
             choice(rychu_creations))
 asyncio.run(get_pics())
+asyncio.run(get_pics_shreck())
 client.run(os.getenv('TOKEN'))
