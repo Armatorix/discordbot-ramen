@@ -65,7 +65,7 @@ async def get_pics_shreck():
     async with aiohttp.ClientSession() as session:
         try:
             search = GoogleSearch({
-                "q": "shrek",
+                "q": "shreck is love meme",
                 "api_key": os.getenv('SERAPI_SECRET'),
                 "tbm": "isch",
                 "jin": randrange(2137)
