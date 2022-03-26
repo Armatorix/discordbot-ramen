@@ -1,3 +1,5 @@
+include .env
+
 .PHONY: setup
 setup:
 	python3 -m venv venv
@@ -5,7 +7,7 @@ setup:
 
 .PHONY: install
 install:
-	# bash -c "venv/bin/activate"
+	# source venv/bin/activate
 	pip install -r requirements.txt
 
 .PHONY: clean

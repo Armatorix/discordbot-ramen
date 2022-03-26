@@ -5,6 +5,7 @@ import aiohttp
 import io
 from random import randrange, choice
 from serpapi import GoogleSearch
+from googlesearch import search
 import asyncio
 import requests
 
@@ -125,17 +126,28 @@ async def on_message(message):
 
     msg_lower = single_letters(message.content.lower())
 
+    if msg_lower.startswith("#lmgify"):
+        print("lmgify...")
+        msg = '\n'.join(search(msg_lower[len("#lmgify "):],num_results=2))
+        await message.channel.send(msg)
+        return
+
+    if msg_lower.startswith("#ggl"):
+        print("ggl...")
+        msg = '\n'.join(search(msg_lower[len("#ggl"):],num_results=2))
+        await message.channel.send(msg)
+        return
+
     if any(s in msg_lower for s in ['#meme', "#gimme"]):
         await message.channel.send(file=discord.File(io.BytesIO(gimme_meme()), filename="meme2137.jpg"))
+
     if any(s in msg_lower for s in ['ramen', '@r4m3n']):
         c = choice(list(ramen_pics))
         await message.channel.send(file=discord.File(io.BytesIO(ramen_pics[c]), filename=c))
-        return
 
     if any(s in msg_lower for s in ['shreck', 'shrek', 'love']):
         c = choice(list(shreck_pics))
         await message.channel.send(file=discord.File(io.BytesIO(shreck_pics[c]), filename=c))
-        return
 
     if any(s in msg_lower for s in ['bieda', 'biede', 'bogactwo']):
         await message.channel.send(
@@ -143,7 +155,7 @@ async def on_message(message):
         await message.channel.send(
             '$botify play https://www.youtube.com/watch?v=fQyg-dk_D94'
         )
-        return
+
     if any(s in msg_lower for s in ['harnold', 'harnaś', 'harnas', 'radler']):
         await message.channel.send(
             "leje harnolda z puchy :axe:\n" +
@@ -153,6 +165,9 @@ async def on_message(message):
         await message.channel.send(
             "wszystko na mój koszt panowie!\n" +
             choice(rychu_creations))
+
+
+
 if __name__ == "__main__":
     asyncio.run(get_pics())
     asyncio.run(get_pics_shreck())
